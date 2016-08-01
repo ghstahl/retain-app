@@ -1,8 +1,8 @@
 var path = require('path');
-var webpack = require('webpack');
+const webpack = require('webpack');
 
-var config = {
-  cache: true,
+const config = {
+  cache: false,
   devtool: 'source-map',
   entry: {
     polyfills: './src/polyfills',
