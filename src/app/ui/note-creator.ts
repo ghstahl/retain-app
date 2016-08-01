@@ -1,11 +1,14 @@
 import {
     Component,
     Output,
-    EventEmitter,} from '@angular/core';
+    EventEmitter,
+} from '@angular/core';
+import {ColorPicker} from './color-picker'
 
 @Component({
-    selector:'note-creator',
-    styles:[`
+    selector: 'note-creator',
+    directives: [ColorPicker],
+    styles: [`
         .note-creator {
           padding: 20px;
           background-color: white;
@@ -20,8 +23,10 @@ import {
         }
     `
     ],
-    template:`
-	<div class="note-creator shadow-2">
+    template: `
+	<div 
+	[ngStyle]="{'background-color':newNote.color}" 
+	class="note-creator shadow-2">
 	<pre *ngIf ="fullForm">{{ newNote | json }}</pre>
       <form class="row" (submit)="onCreateNote()">
         <input
@@ -46,7 +51,16 @@ import {
             class="actions col-xs-12 row between-xs"
             *ngIf ="fullForm"
             >
-            
+            <div class="col-xs-3">
+            <color-picker [colors]="colors"
+            (selected)="onColorSelect($event)"></color-picker>
+            </div>
+            <button 
+            (click)="onCancel()"
+            class="btn-light"
+           >
+            Cancel
+          </button>
           <button 
             [disabled]="!showDone"
             type="submit"
@@ -60,11 +74,18 @@ import {
 `
 })
 export class NoteCreator {
-    newNote = {title:'', value:''};
-    fullForm: boolean = false;
-    showDone: boolean = false;
-    onNewNoteChange(index,titleData){
-        switch(index){
+
+    ngOnInit() {
+        this.showDone = false;
+    }
+
+    colors:Array<string> = ['white', 'seagreen', 'lightblue', 'pink'];
+    newNote = {title: '', value: '', color: 'white'};
+    fullForm:boolean = false;
+    showDone:boolean = false;
+
+    onNewNoteChange(index, titleData) {
+        switch (index) {
             case 0:
                 this.newNote.title = titleData;
                 break;
@@ -72,33 +93,46 @@ export class NoteCreator {
                 this.newNote.value = titleData;
                 break;
         }
-        const {title,value} = this.newNote;
-        if(title && value ){
-            this.showDone=true;
-        }else{
-            this.showDone=false;
+        const {title, value} = this.newNote;
+        if (title && value) {
+            this.showDone = true;
+        } else {
+            this.showDone = false;
         }
         console.log(title);
     }
-    @Output() createNote = new EventEmitter();
 
-    onCreateNote(){
-        console.log("emit:"+this.newNote);
+    @Output() createNote = new EventEmitter();
+    onCancel(){
+        this.reset();
+    }
+    onColorSelect(color:string) {
+        this.newNote.color = color;
+    }
+
+    onCreateNote() {
+        console.log("emit:" + this.newNote);
         console.log("onCreateNote");
 
-         const {title,value} = this.newNote;
-         if(title && value ){
-             this.createNote.emit({title,value});
-             this.reset();
-         }
+        const {title, value, color} = this.newNote;
+        if (title && value) {
+            this.createNote.emit({title, value, color});
+            this.reset();
+        }
     }
-    reset(){
-        this.newNote={
-            title:'',
-            value:''
+
+    reset() {
+        this.newNote = {
+            title: '',
+            value: '',
+            color: 'white'
         };
+        this.toggle(false);
     }
-    toggle(value:boolean){
+
+    toggle(value:boolean) {
         this.fullForm = value;
+        this.showDone = false;
     }
-};
+}
+;

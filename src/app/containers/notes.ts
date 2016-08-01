@@ -1,15 +1,14 @@
-import { Component} from '@angular/core';
-import { NoteCard,NoteCreator } from '../ui';
-
+import {Component} from '@angular/core';
+import {NoteCard, NoteCreator} from '../ui';
 
 
 @Component({
-	selector:'notes-container',
-	directives:[
-		NoteCard,
-		NoteCreator,
-	],
-	styles:[`
+    selector: 'notes-container',
+    directives: [
+        NoteCard,
+        NoteCreator,
+    ],
+    styles: [`
 			.notes {
 			  padding-top: 50px;
 			}
@@ -17,8 +16,8 @@ import { NoteCard,NoteCreator } from '../ui';
 			  margin-bottom: 40px; 
 			}
 	`],
-	 
-	template:`
+
+    template: `
 	<div class="row center-xs notes" >
       <div class="col-xs-6 creator">
         <note-creator
@@ -41,18 +40,21 @@ import { NoteCard,NoteCreator } from '../ui';
 	`
 })
 
-export class Notes{
-	notes = [
-		{title: 'new note',value:'note here',color:'seagreen'},
-		{title: 'new note2',value:'note here2',color:'lightblue'},
-		{title: 'new note2',value:'note here2',color:'lightred'},
+export class Notes {
+    notes = [
+        {title: 'new note', value: 'note here', color: 'seagreen'},
+        {title: 'new note2', value: 'note here2', color: 'lightblue'},
+        {title: 'new note2', value: 'note here2', color: 'pink'},
 
-	]
-	onNoteChecked(note,i){
-		this.notes.splice(i,1);
-	}
-	onCreateNote(note){
-		console.log(note);
-		this.notes.push(note);
-	}
-};
+    ]
+
+    onNoteChecked(note, i) {
+        this.notes.splice(i, 1);
+    }
+
+    onCreateNote(note) {
+        console.log(note);
+        this.notes.push(note);
+    }
+}
+;
