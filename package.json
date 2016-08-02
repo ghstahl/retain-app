@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "webpack --config webpack.spec.js --progress --color && karma start",
+    "build": "webpack --config webpack.config.js --inline --colors --progress --display-error-details --display-cached   --content-base src ",
     "start": "webpack-dev-server --inline --colors --progress --display-error-details --display-cached --port 3000  --content-base src",
     "typings-install": "typings install",
     "postinstall": "npm run typings-install",
